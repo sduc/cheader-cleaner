@@ -34,6 +34,9 @@ class Include:
         elif linenum == self.line:
             raise SelfHeaderDeleteError
 
+    def resolve_path(self):
+        pass
+
 class CFileFactory:
 
     @staticmethod
@@ -69,8 +72,20 @@ class CFile:
     def get_file_include_obj(self, incname):
         return self.includes[incname]
 
+    def is_include_unused(self, inc_obj):
+        inc_path = inc_obj.resolve_path()
+        hfile = CFileFactory.create(inc_path)
+        for s in hfile.symbols:
+            if s in self.symbols:
+                return FALSE
+        return TRUE
+
     def get_unused_includes(self):
-        pass
+        unused = []
+        for inc in self.includes:
+            if self.is_include_unused(inc):
+                unused.append(inc)
+        return unused
 
     def remove_line(self, linenum):
         utils.file_remove_line(self.file_path, linenum)
