@@ -7,34 +7,15 @@
 #                                                                             #
 ###############################################################################
 
-class SelfHeaderDeleteError(Exception):
-    pass
+import argparse
 
-class Include:
-    line
-    includename
-
-    def __init__(
-          self,
-          line,
-          name):
-        pass
-
-    def get_line_number(self):
-        return self.line
-
-    def get_include_name(self):
-        return self.includename
-
-    def update_line(self, linenum):
-        if linenum > self.line:
-            self.line = self.line - 1
-        elif linenum == self.line:
-            raise SelfHeaderDeleteError
-
-    def resolve_path(self):
-        pass
-
+def parse_args():
+    parser = argparse.ArgumentParser(description='CHeader: C header cleaner')
+    parser.add_argument('flist', metavar='file_list', type=str, nargs='+', 
+        help='list of file names to clean the included header files')
+    parser.add_argument('--remove','-r', action='store_true',
+        help='remove the unused includes instead of just printing')
+    return parser.parse_args()
 
 def cheader_main(file_list):
     for f in file_list:
@@ -43,3 +24,6 @@ def cheader_main(file_list):
       includes = cfile.get_unused_includes()
     pass
 
+if __name__ == "__main__":
+    parsed_args = parse_args()
+    print(parsed_args)

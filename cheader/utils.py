@@ -7,6 +7,9 @@
 #                                                                             #
 ###############################################################################
 
+def is_file_ext(filename, ext):
+    return filename.endswith(ext)
+
 def file_remove_line(filename, lineno):
     fro = open(filename, "rb")
 

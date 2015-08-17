@@ -8,16 +8,48 @@
 ###############################################################################
 
 import utils
+import re
+from cparser import *
+
+class SelfHeaderDeleteError(Exception):
+    pass
+
+class Include:
+
+    line
+    includename
+
+    def __init__(
+          self,
+          line,
+          name):
+        pass
+
+    def get_line_number(self):
+        return self.line
+
+    def get_include_name(self):
+        return self.includename
+
+    def update_line(self, linenum):
+        if linenum > self.line:
+            self.line = self.line - 1
+        elif linenum == self.line:
+            raise SelfHeaderDeleteError
+
+    def resolve_path(self):
+        pass
+
 
 class CFileFactory:
 
     @staticmethod
     def is_dot_h(filename):
-        pass
+        return utils.is_file_ext(filename, ".h")
 
     @staticmethod
     def is_dot_c(filename):
-        pass
+        return utils.is_file_ext(filename, ".c")
 
     @staticmethod
     def create(filename):
@@ -28,6 +60,7 @@ class CFileFactory:
 
 
 class CFile:
+
     file_path
     symbols
     includes
@@ -37,9 +70,10 @@ class CFile:
           filename):
         self.file_path = filename
 
-        cparser = CParser(filename)
-        self.symbols = cparser.parse_symbols()
-        self.includes = cparser.parse_includes()
+        cparser = CParser()
+        parsed = cparser.parse(filename)
+        self.symbols = cparser.parsed_symbols()
+        self.includes = cparser.parsed_includes()
 
     def get_file_include_obj(self, incname):
         return self.includes[incname]

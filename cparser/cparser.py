@@ -14,8 +14,18 @@ class CParser:
     def __init__(self, cfile):
         self.file_path = cfile 
 
-    def parse_symbols(self):
-        pass
 
-    def parse_includes(self):
-        pass
+class CParsed:
+
+    __filename
+    __parsed_symbols
+    __parsed_includes
+
+    def __init__(self, filename):
+        self.__filename = filename
+
+    def parsed_symbols(self):
+        return self.__parsed_symbols
+
+    def parsed_includes(self):
+        return self.__parsed_includes
