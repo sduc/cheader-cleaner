@@ -9,10 +9,12 @@
 
 class CParser:
 
-    file_path
-
     def __init__(self, cfile):
         self.file_path = cfile 
+
+    def parse(self, filename):
+        cparsed = CParsed(filename)
+        pass
 
 
 class CParsed:
